@@ -55,13 +55,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\FloydWarshallRouteFinder.cs" />
-    <Compile Include="Algorithms\DijkstraRouteFinder.cs" />
-    <Compile Include="frmResult.cs">
+    <Compile Include="ErrorLabelWrapper.cs" />
+    <Compile Include="frmAddCity.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmResult.Designer.cs">
-      <DependentUpon>frmResult.cs</DependentUpon>
+    <Compile Include="frmAddCity.Designer.cs">
+      <DependentUpon>frmAddCity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Algorithms\FloydWarshallRouteFinder.cs" />
+    <Compile Include="Algorithms\DijkstraRouteFinder.cs" />
+    <Compile Include="frmAddConnection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddConnection.Designer.cs">
+      <DependentUpon>frmAddConnection.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
@@ -74,11 +81,14 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Algorithms\Result.cs" />
+    <EmbeddedResource Include="frmAddCity.resx">
+      <DependentUpon>frmAddCity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddConnection.resx">
+      <DependentUpon>frmAddConnection.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmResult.resx">
-      <DependentUpon>frmResult.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

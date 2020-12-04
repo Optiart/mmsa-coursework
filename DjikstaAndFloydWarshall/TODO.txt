@@ -1,4 +1,3 @@
-﻿1. Floyd-Wharshal implementation
-2. Generate random graphs
-3. UI layout
+﻿1. Generate random graphs (continue)
+3. UI layout (continue)
 4. Paperwork
