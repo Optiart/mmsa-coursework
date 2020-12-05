@@ -5,9 +5,9 @@ namespace DjikstaAndFloydWarshall
 {
     public class FloydWarshallRouteFinder : IFastestRouteFinder
     {
-        public Result Find(List<List<int>> graph, int source, int target)
+        public Result Find(int[,] graph, int source, int target)
         {
-            var vertexCount = graph.Count;
+            var vertexCount = graph.GetLength(0);
             var distances = new int[vertexCount, vertexCount];
             var pathes = new int[vertexCount, vertexCount];
 
@@ -47,9 +47,9 @@ namespace DjikstaAndFloydWarshall
             };
         }
 
-        private void Initialize(List<List<int>> graph, int[,] distances, int[,] pathes)
+        private void Initialize(int[,] graph, int[,] distances, int[,] pathes)
         {
-            var vertexCount = graph.Count;
+            var vertexCount = graph.GetLength(0);
             for (int i = 0; i < vertexCount; i++)
             {
                 for (int j = 0; j < vertexCount; j++)
@@ -63,9 +63,9 @@ namespace DjikstaAndFloydWarshall
             {
                 for (int j = 0; j < vertexCount; j++)
                 {
-                    if (graph[i][j] != -1)
+                    if (graph[i, j] != -1)
                     {
-                        distances[i, j] = graph[i][j];
+                        distances[i, j] = graph[i, j];
                     }
 
                     pathes[i, j] = j;

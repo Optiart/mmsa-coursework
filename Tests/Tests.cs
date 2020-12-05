@@ -36,12 +36,12 @@ namespace Tests
              * |     |     |
              *  ---- 2 ----
              */
-            var graph = new List<List<int>>
+            var graph = new int[,]
             {
-                new List<int> { 0, 5, 2, -1 },
-                new List<int> { 5, 0, 1, 6 },
-                new List<int> { 2, 1, 0, 8 },
-                new List<int> { -1, 6, 8, 0 }
+                { 0, 5, 2, -1 },
+                { 5, 0, 1, 6 },
+                { 2, 1, 0, 8 },
+                { -1, 6, 8, 0 }
             };
 
             // Act
@@ -75,16 +75,16 @@ namespace Tests
         private void FindsCorrectForEightVertices(IFastestRouteFinder algorithm, int start, int target, int expectedDistance, int[] expectedRoute)
         {
             // Arrange
-            var graph = new List<List<int>>
+            var graph = new int[,]
             {
-                new List<int> {  0,  2,  3, -1, -1, -1,  -1,  -1 },
-                new List<int> {  2,  0, -1,  7, -1, -1 , -1,  -1},
-                new List<int> {  3, -1,  0,  9,  4, -1,  -1 , -1},
-                new List<int> { -1,  7,  9,  0, -1,  6,   5,  -1 },
-                new List<int> { -1, -1,  4, -1,  0,  7,  -1,   9 },
-                new List<int> { -1, -1, -1,  6,  7,  0,   10,  12 },
-                new List<int> { -1, -1, -1,  5, -1,  10,  0,  -1 },
-                new List<int> { -1, -1, -1, -1,  9,  12, -1,   0 }
+                {  0,  2,  3, -1, -1, -1,  -1,  -1 },
+                {  2,  0, -1,  7, -1, -1 , -1,  -1},
+                {  3, -1,  0,  9,  4, -1,  -1 , -1},
+                { -1,  7,  9,  0, -1,  6,   5,  -1 },
+                { -1, -1,  4, -1,  0,  7,  -1,   9 },
+                { -1, -1, -1,  6,  7,  0,   10,  12 },
+                { -1, -1, -1,  5, -1,  10,  0,  -1 },
+                { -1, -1, -1, -1,  9,  12, -1,   0 }
             };
 
             var dijkstra = new DijkstraRouteFinder();

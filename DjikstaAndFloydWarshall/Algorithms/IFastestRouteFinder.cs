@@ -8,6 +8,6 @@ namespace DjikstaAndFloydWarshall
 {
     public interface IFastestRouteFinder
     {
-        Result Find(List<List<int>> graph, int start, int target);
+        Result Find(int[,] graph, int start, int target);
     }
 }

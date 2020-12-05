@@ -4,9 +4,9 @@ namespace DjikstaAndFloydWarshall
 {
     public class DijkstraRouteFinder : IFastestRouteFinder
     {
-        public Result Find(List<List<int>> graph, int source, int target)
+        public Result Find(int[,] graph, int source, int target)
         {
-            var vertexCount = graph.Count;
+            var vertexCount = graph.GetLength(0);
             var distances = new int[vertexCount];
             var visited = new bool[vertexCount];
 
@@ -36,9 +36,9 @@ namespace DjikstaAndFloydWarshall
 
                 for (int vertex = 0; vertex < vertexCount; vertex++)
                 {
-                    if (graph[index][vertex] != -1 && !visited[vertex])
+                    if (graph[index, vertex] != -1 && !visited[vertex])
                     {
-                        var newDistance = distances[index] + graph[index][vertex];
+                        var newDistance = distances[index] + graph[index, vertex];
                         if (newDistance < distances[vertex])
                         {
                             distances[vertex] = newDistance;

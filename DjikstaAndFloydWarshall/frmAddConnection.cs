@@ -20,7 +20,7 @@ namespace DjikstaAndFloydWarshall
             _cities = cities;
             _currentCity = currentCity;
 
-            var possibleCitiesToConnect = _cities.Where(c => !currentCity.Connections.Any(connection => connection.CityName == c.Name) && c.Name != currentCity.Name);
+            var possibleCitiesToConnect = _cities.Where(c => !currentCity.Connections.Any(connection => connection.City.Name == c.Name) && c.Name != currentCity.Name);
             cmbConnectionTo.Items.AddRange(possibleCitiesToConnect.Select(c => c.Name).ToArray());
 
             if (cmbConnectionTo.Items.Count > 0)
@@ -38,7 +38,7 @@ namespace DjikstaAndFloydWarshall
             }
 
             var selectedCityToConnect = cmbConnectionTo.SelectedItem.ToString();
-            if (_currentCity.Connections.Any(c => c.CityName == selectedCityToConnect))
+            if (_currentCity.Connections.Any(c => c.City.Name == selectedCityToConnect))
             {
                 _errorLabel.Write("Такий зв'язок вже існує");
                 return;
