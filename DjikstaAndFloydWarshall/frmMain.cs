@@ -18,6 +18,12 @@ namespace DjikstaAndFloydWarshall
             lstCity.Items.Clear();
             lstCityConnections.Items.Clear();
             lstAllConnections.Items.Clear();
+            lblCityCount.Text = string.Empty;
+            lblConnectionCount.Text = string.Empty;
+            lblAllConnectionsCount.Text = string.Empty;
+            lblGraphError.Text = string.Empty;
+            lblDijkstraResult.Text = string.Empty;
+            lblFloydWarshal.Text = string.Empty;
             pnlConnections.Enabled = false;
         }
 
@@ -41,12 +47,13 @@ namespace DjikstaAndFloydWarshall
             frmAddConnection.ShowDialog();
 
             RefreshAllConnections();
-            RefreshList(lstCityConnections, selectedCity.Connections.ToArray());
+            RefreshConnections(selectedCity.Connections);
         }
 
         private void RefreshAllConnections()
         {
             lstAllConnections.Items.Clear();
+            lblAllConnectionsCount.Text = string.Empty;
             foreach (var city in _cities)
             {
                 foreach (var connection in city.Connections)
@@ -54,6 +61,7 @@ namespace DjikstaAndFloydWarshall
                     lstAllConnections.Items.Add($"{city.Name} - {connection.City.Name} ({connection.DistanceKm} км)");
                 }
             }
+            lblAllConnectionsCount.Text = $"{lstAllConnections.Items.Count}";
         }
 
         private void lstCity_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,7 +105,17 @@ namespace DjikstaAndFloydWarshall
             RemoveFromList(lstCity, btnRemoveCity, action);
         }
 
-        private void RefreshCities() => RefreshList(lstCity, _cities.ToArray());
+        private void RefreshCities()
+        {
+            RefreshList(lstCity, _cities.ToArray());
+            lblCityCount.Text = $"{lstCity.Items.Count}";
+        }
+
+        private void RefreshConnections(List<Connection> connections)
+        {
+            RefreshList(lstCityConnections, connections.ToArray());
+            lblConnectionCount.Text = $"{lstCityConnections.Items.Count}";
+        }
 
         private void btnRemoveConnection_Click(object sender, EventArgs e)
         {
@@ -111,7 +129,7 @@ namespace DjikstaAndFloydWarshall
                 }
 
                 selectedCity.Connections.RemoveAll(c => c.City.Id == selectedItem.City.Id);
-                RefreshList(lstCityConnections, selectedCity.Connections);
+                RefreshConnections(selectedCity.Connections);
             };
 
             RemoveFromList(lstCityConnections, btnRemoveConnection, action);
@@ -144,6 +162,16 @@ namespace DjikstaAndFloydWarshall
 
         private void RefreshGraphView()
         {
+            if (_cities.Count > 100 || _cities.SelectMany(c => c.Connections).Count() > 1000)
+            {
+                lblGraphError.Text = "Граф не буде відображений - занадто багато зв'язків";
+                return;
+            }
+            else
+            {
+                lblGraphError.Text = string.Empty;
+            }
+
             var graph = new Graph("Shortest path");
 
             foreach (var city in _cities)
@@ -176,19 +204,19 @@ namespace DjikstaAndFloydWarshall
                 new City(7, "Івано-Франківськ")
             };
 
-            _cities[0].Connections.Add(new Connection(1, "Житомир", 140));
-            _cities[0].Connections.Add(new Connection(4, "Вінниця", 267));
-            _cities[1].Connections.Add(new Connection(6, "Рівне", 222));
-            _cities[1].Connections.Add(new Connection(4, "Вінниця", 129));
-            _cities[1].Connections.Add(new Connection(3, "Хмельницький", 183));
-            _cities[3].Connections.Add(new Connection(5, "Тернопіль", 111));
-            _cities[3].Connections.Add(new Connection(6, "Рівне", 194));
-            _cities[4].Connections.Add(new Connection(3, "Хмельницький", 119));
-            _cities[5].Connections.Add(new Connection(2, "Львів", 127));
-            _cities[5].Connections.Add(new Connection(7, "Івано-Франківськ", 144));
-            _cities[6].Connections.Add(new Connection(5, "Тернопіль", 153));
-            _cities[6].Connections.Add(new Connection(2, "Львів", 210));
-            _cities[7].Connections.Add(new Connection(2, "Львів", 132));
+            _cities[0].Connections.Add(new Connection(_cities[1], 140)); // Житомир
+            _cities[0].Connections.Add(new Connection(_cities[4], 267)); // Вінниця
+            _cities[1].Connections.Add(new Connection(_cities[6], 222)); // Рівне
+            _cities[1].Connections.Add(new Connection(_cities[4], 129)); // Вінниця
+            _cities[1].Connections.Add(new Connection(_cities[3], 183)); // Хмельницький
+            _cities[3].Connections.Add(new Connection(_cities[5], 111)); // Тернопіль
+            _cities[3].Connections.Add(new Connection(_cities[6], 194)); // Рівне
+            _cities[4].Connections.Add(new Connection(_cities[3], 119)); // Хмельницький
+            _cities[5].Connections.Add(new Connection(_cities[2], 127)); // Львів
+            _cities[5].Connections.Add(new Connection(_cities[7], 144)); // Івано-Франківськ
+            _cities[6].Connections.Add(new Connection(_cities[5], 153)); // Тернопіль
+            _cities[6].Connections.Add(new Connection(_cities[2], 210)); // Львів
+            _cities[7].Connections.Add(new Connection(_cities[2], 132)); // Львів
 
             RefreshCities();
             RefreshAllConnections();
@@ -262,7 +290,6 @@ namespace DjikstaAndFloydWarshall
 
         private void ReconstructRoute(int[] route, Dictionary<int, int> indexToIdMapping, int shortestDistance)
         {
-            lblShortestPath.Text = string.Empty;
             var routeCityIds = route.Select(r => indexToIdMapping[r]).ToArray();
             var cityNames = new string[routeCityIds.Length];
             for (int i = 0; i < routeCityIds.Length; i++)
@@ -270,8 +297,17 @@ namespace DjikstaAndFloydWarshall
                 cityNames[i] = _cities.Single(c => c.Id == routeCityIds[i]).Name;
             }
 
-            lblShortestPath.Text = string.Join("->", cityNames);
+            txtShortestPath.Text = string.Join("->", cityNames);
+            if (gViewer.Graph != null)
+            {
+                HighlightShortestPath(cityNames);
+            }
 
+            lblShortestDistance.Text = $"({shortestDistance} км)";
+        }
+
+        private void HighlightShortestPath(string[] cityNames)
+        {
             foreach (var edge in gViewer.Graph.Edges)
             {
                 if (cityNames.Contains(edge.SourceNode.Id) && cityNames.Contains(edge.TargetNode.Id))
@@ -287,8 +323,6 @@ namespace DjikstaAndFloydWarshall
 
                 gViewer.Refresh();
             }
-
-            lblShortestPath.Text += $"({shortestDistance} км)";
         }
 
         private void cmbCityFrom_Click(object sender, EventArgs e)
@@ -301,6 +335,38 @@ namespace DjikstaAndFloydWarshall
         {
             cmbCityTo.Items.Clear();
             cmbCityTo.Items.AddRange(_cities.ToArray());
+        }
+
+        private static Random _random = new Random();
+        private void btnGenerateCitiesLoad_Click(object sender, EventArgs e)
+        {
+            _cities.Clear();
+
+            var cityCount = 500;
+            var maxConnections = 100;
+            var maxDistance = 100;
+            
+            for (int i = 0; i < cityCount; i++)
+            {
+                _cities.Add(new City(i, $"City-{i}"));
+            }
+
+            foreach (var city in _cities)
+            {
+                for (int j = 0; j < _random.Next(1, maxConnections); j++)
+                {
+                    if (city.Id == j)
+                    {
+                        continue;
+                    }
+
+                    city.Connections.Add(
+                        new Connection(_cities.FirstOrDefault(c => c.Id == j), _random.Next(1, maxDistance)));
+                }
+            }
+
+            RefreshCities();
+            RefreshAllConnections();
         }
     }
 
@@ -327,9 +393,9 @@ namespace DjikstaAndFloydWarshall
 
         public int DistanceKm { get; }
 
-        public Connection(int cityId, string cityName, int distanceKm)
+        public Connection(City city, int distanceKm)
         {
-            City = new City(cityId, cityName);
+            City = city;
             DistanceKm = distanceKm;
         }
 

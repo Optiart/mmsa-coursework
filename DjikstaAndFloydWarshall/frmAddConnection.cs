@@ -51,7 +51,7 @@ namespace DjikstaAndFloydWarshall
             }
 
             var cityToConnect = _cities.SingleOrDefault(c => c.Name == selectedCityToConnect);
-            _currentCity.Connections.Add(new Connection(cityToConnect.Id, cityToConnect.Name, distanceKm));
+            _currentCity.Connections.Add(new Connection(cityToConnect, distanceKm));
             this.Close();
         }
     }
