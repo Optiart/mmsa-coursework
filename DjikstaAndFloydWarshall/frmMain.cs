@@ -34,7 +34,7 @@ namespace DjikstaAndFloydWarshall
         {
             var frmAddCity = new frmAddCity(_cities);
             frmAddCity.ShowDialog();
-            RefreshList(lstCity, _cities.ToArray());
+            RefreshCities();
         }
 
         private void btnAddConnection_Click(object sender, EventArgs e)
@@ -106,18 +106,6 @@ namespace DjikstaAndFloydWarshall
             };
 
             RemoveFromList(lstCity, btnRemoveCity, action);
-        }
-
-        private void RefreshCities()
-        {
-            RefreshList(lstCity, _cities.ToArray());
-            lblCityCount.Text = $"{lstCity.Items.Count}";
-        }
-
-        private void RefreshConnections(List<Connection> connections)
-        {
-            RefreshList(lstCityConnections, connections.ToArray());
-            lblConnectionCount.Text = $"{lstCityConnections.Items.Count}";
         }
 
         private void btnRemoveConnection_Click(object sender, EventArgs e)
@@ -193,41 +181,6 @@ namespace DjikstaAndFloydWarshall
             }
 
             gViewer.Graph = graph;
-        }
-
-        private void btnGenerateCities_Click(object sender, EventArgs e)
-        {
-            cmbCityFrom.Items.Clear();
-            cmbCityTo.Items.Clear();
-
-            _cities = new List<City>
-            {
-                new City(0, "Київ"),
-                new City(1, "Житомир"),
-                new City(2, "Львів"),
-                new City(3, "Хмельницький"),
-                new City(4, "Вінниця"),
-                new City(5, "Тернопіль"),
-                new City(6, "Рівне"),
-                new City(7, "Івано-Франківськ")
-            };
-
-            _cities[0].Connections.Add(new Connection(_cities[1], 140)); // Житомир
-            _cities[0].Connections.Add(new Connection(_cities[4], 267)); // Вінниця
-            _cities[1].Connections.Add(new Connection(_cities[6], 222)); // Рівне
-            _cities[1].Connections.Add(new Connection(_cities[4], 129)); // Вінниця
-            _cities[1].Connections.Add(new Connection(_cities[3], 183)); // Хмельницький
-            _cities[3].Connections.Add(new Connection(_cities[5], 111)); // Тернопіль
-            _cities[3].Connections.Add(new Connection(_cities[6], 194)); // Рівне
-            _cities[4].Connections.Add(new Connection(_cities[3], 119)); // Хмельницький
-            _cities[5].Connections.Add(new Connection(_cities[2], 127)); // Львів
-            _cities[5].Connections.Add(new Connection(_cities[7], 144)); // Івано-Франківськ
-            _cities[6].Connections.Add(new Connection(_cities[5], 153)); // Тернопіль
-            _cities[6].Connections.Add(new Connection(_cities[2], 210)); // Львів
-            _cities[7].Connections.Add(new Connection(_cities[2], 132)); // Львів
-
-            RefreshCities();
-            RefreshAllConnections();
         }
 
         private async void btnCalculate_Click(object sender, EventArgs e)
@@ -356,73 +309,33 @@ namespace DjikstaAndFloydWarshall
             cmbCityTo.Items.AddRange(_cities.ToArray());
         }
 
-        private static Random _random = new Random();
-        private void btnGenerateCitiesLoad_Click(object sender, EventArgs e)
+        private void btnGenerateCities_Click(object sender, EventArgs e) =>
+            AutoGenerate(() => AutoGenerator.GenerateCitiesForDemo());
+
+        private void btnGenerateCitiesLoad_Click(object sender, EventArgs e) =>
+            AutoGenerate(() => AutoGenerator.GenerateCitiesAndConnectionsForLoad(cityCount: 800, maxConnections: 10, maxDistance: 300));
+
+        private void AutoGenerate(Func<List<City>> generateCities)
         {
             cmbCityFrom.Items.Clear();
             cmbCityTo.Items.Clear();
-            _cities.Clear();
 
-            var cityCount = 800;
-            var maxConnections = 10;
-            var maxDistance = 300;
-
-            for (int i = 0; i < cityCount; i++)
-            {
-                _cities.Add(new City(i, $"City-{i}"));
-            }
-
-            for (int i = 0; i < _cities.Count; i++)
-            {
-                for (int j = 0; j < _random.Next(1, maxConnections); j++)
-                {
-                    var cityIdToConnect = _random.Next(Math.Min(i + 1, cityCount - 1), Math.Min(cityCount, i + maxConnections));
-
-                    if (_cities[i].Id == cityIdToConnect ||
-                        _cities[i].Connections.Any(c => c.City.Id == cityIdToConnect))
-                    {
-                        continue;
-                    }
-
-                    _cities[i].Connections.Add(
-                        new Connection(_cities.FirstOrDefault(c => c.Id == cityIdToConnect), _random.Next(1, maxDistance)));
-                }
-            }
+            _cities = generateCities();
 
             RefreshCities();
             RefreshAllConnections();
         }
-    }
 
-    public class City
-    {
-        public int Id { get; }
-
-        public string Name { get; }
-
-        public List<Connection> Connections { get; } = new List<Connection>();
-
-        public City(int id, string name)
+        private void RefreshCities()
         {
-            Id = id;
-            Name = name;
+            RefreshList(lstCity, _cities.ToArray());
+            lblCityCount.Text = $"{lstCity.Items.Count}";
         }
 
-        public override string ToString() => $"{Name}";
-    }
-
-    public class Connection
-    {
-        public City City { get; set; }
-
-        public int DistanceKm { get; }
-
-        public Connection(City city, int distanceKm)
+        private void RefreshConnections(List<Connection> connections)
         {
-            City = city;
-            DistanceKm = distanceKm;
+            RefreshList(lstCityConnections, connections.ToArray());
+            lblConnectionCount.Text = $"{lstCityConnections.Items.Count}";
         }
-
-        public override string ToString() => $"{City.Name} - {DistanceKm} км";
     }
 }
