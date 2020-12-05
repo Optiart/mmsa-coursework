@@ -25,6 +25,7 @@ namespace DjikstaAndFloydWarshall
             lblDijkstraResult.Text = string.Empty;
             lblFloydWarshal.Text = string.Empty;
             pnlConnections.Enabled = false;
+            lblShortestDistance.Text = string.Empty;
         }
 
         private void btnAddCity_Click(object sender, EventArgs e)

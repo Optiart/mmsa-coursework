@@ -138,6 +138,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // btnRemoveConnection
             // 
+            this.btnRemoveConnection.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRemoveConnection.Enabled = false;
             this.btnRemoveConnection.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRemoveConnection.Location = new System.Drawing.Point(9, 106);
@@ -165,6 +166,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // btnAddConnection
             // 
+            this.btnAddConnection.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddConnection.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddConnection.Location = new System.Drawing.Point(9, 40);
             this.btnAddConnection.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -188,6 +190,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // btnCalculate
             // 
+            this.btnCalculate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCalculate.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCalculate.Location = new System.Drawing.Point(1265, 323);
             this.btnCalculate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -233,6 +236,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // cmbCityFrom
             // 
+            this.cmbCityFrom.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmbCityFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCityFrom.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbCityFrom.FormattingEnabled = true;
@@ -245,6 +249,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // cmbCityTo
             // 
+            this.cmbCityTo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmbCityTo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCityTo.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbCityTo.FormattingEnabled = true;
@@ -350,6 +355,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // btnGenerateCitiesDemo
             // 
+            this.btnGenerateCitiesDemo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnGenerateCitiesDemo.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGenerateCitiesDemo.Location = new System.Drawing.Point(4, 235);
             this.btnGenerateCitiesDemo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -373,6 +379,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // btnRemoveCity
             // 
+            this.btnRemoveCity.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRemoveCity.Enabled = false;
             this.btnRemoveCity.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRemoveCity.Location = new System.Drawing.Point(11, 106);
@@ -402,6 +409,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // btnAddCity
             // 
+            this.btnAddCity.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddCity.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddCity.Location = new System.Drawing.Point(10, 40);
             this.btnAddCity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -425,6 +433,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // btnGenerateCitiesLoad
             // 
+            this.btnGenerateCitiesLoad.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnGenerateCitiesLoad.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGenerateCitiesLoad.Location = new System.Drawing.Point(4, 318);
             this.btnGenerateCitiesLoad.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
