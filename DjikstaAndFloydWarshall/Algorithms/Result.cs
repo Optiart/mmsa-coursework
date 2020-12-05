@@ -8,7 +8,7 @@ namespace DjikstaAndFloydWarshall
 {
     public class Result
     {
-        public int Distance { get; set; }
+        public long Distance { get; set; }
 
         public int[] Route { get; set; }
     }

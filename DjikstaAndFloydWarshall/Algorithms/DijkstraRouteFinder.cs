@@ -7,7 +7,7 @@ namespace DjikstaAndFloydWarshall
         public Result Find(int[,] graph, int source, int target)
         {
             var vertexCount = graph.GetLength(0);
-            var distances = new int[vertexCount];
+            var distances = new long[vertexCount];
             var visited = new bool[vertexCount];
 
             var minPQ = new SimpleMinimumPriorityQueue();
@@ -21,7 +21,7 @@ namespace DjikstaAndFloydWarshall
 
             for (int i = 0; i < distances.Length; i++)
             {
-                distances[i] = i == source ? 0 : int.MaxValue;
+                distances[i] = i == source ? 0 : long.MaxValue;
             }
 
             while (!minPQ.IsEmpty)

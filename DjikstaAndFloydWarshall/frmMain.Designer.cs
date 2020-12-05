@@ -39,14 +39,12 @@ namespace DjikstaAndFloydWarshall
             this.label3 = new System.Windows.Forms.Label();
             this.btnCalculate = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.cmbCityFrom = new System.Windows.Forms.ComboBox();
             this.cmbCityTo = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.lblDijkstraResult = new System.Windows.Forms.Label();
             this.lblFloydWarshal = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.lstAllConnections = new System.Windows.Forms.ListBox();
@@ -58,12 +56,17 @@ namespace DjikstaAndFloydWarshall
             this.btnAddCity = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.btnGenerateCitiesLoad = new System.Windows.Forms.Button();
-            this.txtShortestPath = new System.Windows.Forms.TextBox();
-            this.lblShortestDistance = new System.Windows.Forms.Label();
+            this.txtDijkstraShortestPath = new System.Windows.Forms.TextBox();
+            this.lblDijkstraShortestDistance = new System.Windows.Forms.Label();
             this.lblGraphError = new System.Windows.Forms.Label();
             this.lblCityCount = new System.Windows.Forms.Label();
             this.lblConnectionCount = new System.Windows.Forms.Label();
             this.lblAllConnectionsCount = new System.Windows.Forms.Label();
+            this.lblDijkstraResult = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lblFloydWarshalShortestDistance = new System.Windows.Forms.Label();
+            this.txtFloydWarshalShortestPath = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnlConnections.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -205,29 +208,18 @@ namespace DjikstaAndFloydWarshall
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(921, 863);
+            this.label6.Location = new System.Drawing.Point(913, 778);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(225, 21);
             this.label6.TabIndex = 25;
             this.label6.Text = "Алгоритм Флойда-Уоршелла";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(989, 820);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(159, 21);
-            this.label7.TabIndex = 24;
-            this.label7.Text = "Алгоритм Дейкстри";
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(924, 504);
+            this.label8.Location = new System.Drawing.Point(924, 515);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(165, 21);
@@ -293,22 +285,11 @@ namespace DjikstaAndFloydWarshall
             this.label12.TabIndex = 31;
             this.label12.Text = "до";
             // 
-            // lblDijkstraResult
-            // 
-            this.lblDijkstraResult.AutoSize = true;
-            this.lblDijkstraResult.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDijkstraResult.Location = new System.Drawing.Point(1240, 820);
-            this.lblDijkstraResult.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblDijkstraResult.Name = "lblDijkstraResult";
-            this.lblDijkstraResult.Size = new System.Drawing.Size(57, 21);
-            this.lblDijkstraResult.TabIndex = 32;
-            this.lblDijkstraResult.Text = "100мс";
-            // 
             // lblFloydWarshal
             // 
             this.lblFloydWarshal.AutoSize = true;
             this.lblFloydWarshal.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFloydWarshal.Location = new System.Drawing.Point(1240, 863);
+            this.lblFloydWarshal.Location = new System.Drawing.Point(1261, 778);
             this.lblFloydWarshal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFloydWarshal.Name = "lblFloydWarshal";
             this.lblFloydWarshal.Size = new System.Drawing.Size(57, 21);
@@ -444,27 +425,27 @@ namespace DjikstaAndFloydWarshall
             this.btnGenerateCitiesLoad.UseVisualStyleBackColor = true;
             this.btnGenerateCitiesLoad.Click += new System.EventHandler(this.btnGenerateCitiesLoad_Click);
             // 
-            // txtShortestPath
+            // txtDijkstraShortestPath
             // 
-            this.txtShortestPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtShortestPath.Location = new System.Drawing.Point(1096, 504);
-            this.txtShortestPath.Multiline = true;
-            this.txtShortestPath.Name = "txtShortestPath";
-            this.txtShortestPath.ReadOnly = true;
-            this.txtShortestPath.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtShortestPath.Size = new System.Drawing.Size(399, 241);
-            this.txtShortestPath.TabIndex = 49;
+            this.txtDijkstraShortestPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDijkstraShortestPath.Location = new System.Drawing.Point(1096, 515);
+            this.txtDijkstraShortestPath.Multiline = true;
+            this.txtDijkstraShortestPath.Name = "txtDijkstraShortestPath";
+            this.txtDijkstraShortestPath.ReadOnly = true;
+            this.txtDijkstraShortestPath.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtDijkstraShortestPath.Size = new System.Drawing.Size(399, 241);
+            this.txtDijkstraShortestPath.TabIndex = 49;
             // 
-            // lblShortestDistance
+            // lblDijkstraShortestDistance
             // 
-            this.lblShortestDistance.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShortestDistance.Location = new System.Drawing.Point(924, 534);
-            this.lblShortestDistance.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblShortestDistance.Name = "lblShortestDistance";
-            this.lblShortestDistance.Size = new System.Drawing.Size(152, 21);
-            this.lblShortestDistance.TabIndex = 50;
-            this.lblShortestDistance.Text = "(350 км)";
-            this.lblShortestDistance.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDijkstraShortestDistance.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDijkstraShortestDistance.Location = new System.Drawing.Point(924, 545);
+            this.lblDijkstraShortestDistance.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDijkstraShortestDistance.Name = "lblDijkstraShortestDistance";
+            this.lblDijkstraShortestDistance.Size = new System.Drawing.Size(152, 21);
+            this.lblDijkstraShortestDistance.TabIndex = 50;
+            this.lblDijkstraShortestDistance.Text = "(350 км)";
+            this.lblDijkstraShortestDistance.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblGraphError
             // 
@@ -511,28 +492,86 @@ namespace DjikstaAndFloydWarshall
             this.lblAllConnectionsCount.TabIndex = 48;
             this.lblAllConnectionsCount.Text = "(100)";
             // 
+            // lblDijkstraResult
+            // 
+            this.lblDijkstraResult.AutoSize = true;
+            this.lblDijkstraResult.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDijkstraResult.Location = new System.Drawing.Point(1261, 485);
+            this.lblDijkstraResult.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDijkstraResult.Name = "lblDijkstraResult";
+            this.lblDijkstraResult.Size = new System.Drawing.Size(57, 21);
+            this.lblDijkstraResult.TabIndex = 53;
+            this.lblDijkstraResult.Text = "100мс";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(924, 485);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(159, 21);
+            this.label7.TabIndex = 52;
+            this.label7.Text = "Алгоритм Дейкстри";
+            // 
+            // lblFloydWarshalShortestDistance
+            // 
+            this.lblFloydWarshalShortestDistance.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFloydWarshalShortestDistance.Location = new System.Drawing.Point(924, 837);
+            this.lblFloydWarshalShortestDistance.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblFloydWarshalShortestDistance.Name = "lblFloydWarshalShortestDistance";
+            this.lblFloydWarshalShortestDistance.Size = new System.Drawing.Size(152, 21);
+            this.lblFloydWarshalShortestDistance.TabIndex = 56;
+            this.lblFloydWarshalShortestDistance.Text = "(350 км)";
+            this.lblFloydWarshalShortestDistance.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtFloydWarshalShortestPath
+            // 
+            this.txtFloydWarshalShortestPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtFloydWarshalShortestPath.Location = new System.Drawing.Point(1096, 807);
+            this.txtFloydWarshalShortestPath.Multiline = true;
+            this.txtFloydWarshalShortestPath.Name = "txtFloydWarshalShortestPath";
+            this.txtFloydWarshalShortestPath.ReadOnly = true;
+            this.txtFloydWarshalShortestPath.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtFloydWarshalShortestPath.Size = new System.Drawing.Size(399, 241);
+            this.txtFloydWarshalShortestPath.TabIndex = 55;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(924, 807);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(165, 21);
+            this.label2.TabIndex = 54;
+            this.label2.Text = "Найкоротший шлях: ";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1520, 1148);
+            this.Controls.Add(this.lblFloydWarshalShortestDistance);
+            this.Controls.Add(this.txtFloydWarshalShortestPath);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblDijkstraResult);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.lblAllConnectionsCount);
             this.Controls.Add(this.lblGraphError);
-            this.Controls.Add(this.lblShortestDistance);
-            this.Controls.Add(this.txtShortestPath);
+            this.Controls.Add(this.lblDijkstraShortestDistance);
+            this.Controls.Add(this.txtDijkstraShortestPath);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lstAllConnections);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.lblFloydWarshal);
-            this.Controls.Add(this.lblDijkstraResult);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.cmbCityTo);
             this.Controls.Add(this.cmbCityFrom);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.pnlConnections);
@@ -556,14 +595,12 @@ namespace DjikstaAndFloydWarshall
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnCalculate;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox cmbCityFrom;
         private System.Windows.Forms.ComboBox cmbCityTo;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label lblDijkstraResult;
         private System.Windows.Forms.Label lblFloydWarshal;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label5;
@@ -579,12 +616,17 @@ namespace DjikstaAndFloydWarshall
         private System.Windows.Forms.Button btnAddCity;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnGenerateCitiesLoad;
-        private System.Windows.Forms.TextBox txtShortestPath;
-        private System.Windows.Forms.Label lblShortestDistance;
+        private System.Windows.Forms.TextBox txtDijkstraShortestPath;
+        private System.Windows.Forms.Label lblDijkstraShortestDistance;
         private System.Windows.Forms.Label lblGraphError;
         private System.Windows.Forms.Label lblConnectionCount;
         private System.Windows.Forms.Label lblCityCount;
         private System.Windows.Forms.Label lblAllConnectionsCount;
+        private System.Windows.Forms.Label lblDijkstraResult;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblFloydWarshalShortestDistance;
+        private System.Windows.Forms.TextBox txtFloydWarshalShortestPath;
+        private System.Windows.Forms.Label label2;
     }
 }
 

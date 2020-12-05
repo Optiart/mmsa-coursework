@@ -4,16 +4,16 @@ namespace DjikstaAndFloydWarshall
 {
     public class SimpleMinimumPriorityQueue
     {
-        private readonly List<(int index, int distance)> _values;
+        private readonly List<(int index, long distance)> _values;
 
         public bool IsEmpty => _values.Count == 0;
 
         public SimpleMinimumPriorityQueue()
         {
-            _values = new List<(int index, int distance)>();
+            _values = new List<(int index, long distance)>();
         }
 
-        public (int index, int distance) ExtractMin()
+        public (int index, long distance) ExtractMin()
         {
             var minAt = 0;
             var min = _values[minAt];
@@ -31,7 +31,7 @@ namespace DjikstaAndFloydWarshall
             return min;
         }
 
-        public void UpdatePriority((int index, int distance) node)
+        public void UpdatePriority((int index, long distance) node)
         {
             var indexOf = _values.FindIndex(v => v.index == node.index);
 

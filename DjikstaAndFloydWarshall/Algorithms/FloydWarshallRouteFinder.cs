@@ -8,7 +8,7 @@ namespace DjikstaAndFloydWarshall
         public Result Find(int[,] graph, int source, int target)
         {
             var vertexCount = graph.GetLength(0);
-            var distances = new int[vertexCount, vertexCount];
+            var distances = new long[vertexCount, vertexCount];
             var pathes = new int[vertexCount, vertexCount];
 
             Initialize(graph, distances, pathes);
@@ -19,10 +19,10 @@ namespace DjikstaAndFloydWarshall
                 {
                     for (int j = 0; j < vertexCount; j++)
                     {
-                        int calculatedDistance;
-                        if (distances[i, k] == int.MaxValue || distances[k, j] == int.MaxValue)
+                        long calculatedDistance;
+                        if (distances[i, k] == long.MaxValue || distances[k, j] == long.MaxValue)
                         {
-                            calculatedDistance = int.MaxValue;
+                            calculatedDistance = long.MaxValue;
                         }
                         else
                         {
@@ -47,14 +47,14 @@ namespace DjikstaAndFloydWarshall
             };
         }
 
-        private void Initialize(int[,] graph, int[,] distances, int[,] pathes)
+        private void Initialize(int[,] graph, long[,] distances, int[,] pathes)
         {
             var vertexCount = graph.GetLength(0);
             for (int i = 0; i < vertexCount; i++)
             {
                 for (int j = 0; j < vertexCount; j++)
                 {
-                    distances[i, j] = int.MaxValue;
+                    distances[i, j] = long.MaxValue;
                     pathes[i, j] = i == j ? i : -1;
                 }
             }

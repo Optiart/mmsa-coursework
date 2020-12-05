@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DjikstaAndFloydWarshall
@@ -25,7 +26,8 @@ namespace DjikstaAndFloydWarshall
             lblDijkstraResult.Text = string.Empty;
             lblFloydWarshal.Text = string.Empty;
             pnlConnections.Enabled = false;
-            lblShortestDistance.Text = string.Empty;
+            lblDijkstraShortestDistance.Text = string.Empty;
+            lblFloydWarshalShortestDistance.Text = string.Empty;
         }
 
         private void btnAddCity_Click(object sender, EventArgs e)
@@ -166,6 +168,8 @@ namespace DjikstaAndFloydWarshall
             if (_cities.Count > 100 || _cities.SelectMany(c => c.Connections).Count() > 1000)
             {
                 lblGraphError.Text = "Граф не буде відображений - занадто багато зв'язків";
+                gViewer.Graph = null;
+                gViewer.Refresh();
                 return;
             }
             else
@@ -193,6 +197,9 @@ namespace DjikstaAndFloydWarshall
 
         private void btnGenerateCities_Click(object sender, EventArgs e)
         {
+            cmbCityFrom.Items.Clear();
+            cmbCityTo.Items.Clear();
+
             _cities = new List<City>
             {
                 new City(0, "Київ"),
@@ -223,7 +230,7 @@ namespace DjikstaAndFloydWarshall
             RefreshAllConnections();
         }
 
-        private void btnCalculate_Click(object sender, EventArgs e)
+        private async void btnCalculate_Click(object sender, EventArgs e)
         {
             var cityFrom = cmbCityFrom.SelectedItem as City;
             if (cityFrom == null)
@@ -264,20 +271,31 @@ namespace DjikstaAndFloydWarshall
                 }
             }
 
-            var dijkstra = new DijkstraRouteFinder();
-            var floydWarshal = new FloydWarshallRouteFinder();
+            btnCalculate.Enabled = false;
+            this.Cursor = Cursors.WaitCursor;
 
-            var dijkstraResult = RunAndMeasure(() =>
-                dijkstra.Find(graph, indexToIdMapping[cityFrom.Id], indexToIdMapping[cityTo.Id]));
+            var results = await Task.Run(() =>
+            {
+                var dijkstra = new DijkstraRouteFinder();
+                var floydWarshal = new FloydWarshallRouteFinder();
 
-            lblDijkstraResult.Text = $"{dijkstraResult.elapsedMs} мс";
+                var dijkstraResult = RunAndMeasure(() =>
+                    dijkstra.Find(graph, indexToIdMapping[cityFrom.Id], indexToIdMapping[cityTo.Id]));
 
-            var floydWarshalResult = RunAndMeasure(() =>
-                floydWarshal.Find(graph, indexToIdMapping[cityFrom.Id], indexToIdMapping[cityTo.Id]));
+                var floydWarshalResult = RunAndMeasure(() =>
+                    floydWarshal.Find(graph, indexToIdMapping[cityFrom.Id], indexToIdMapping[cityTo.Id]));
 
-            lblFloydWarshal.Text = $"{floydWarshalResult.elapsedMs} мс";
+                return (dijkstraResult, floydWarshalResult);
+            });
 
-            ReconstructRoute(dijkstraResult.result.Route, indexToIdMapping, dijkstraResult.result.Distance);
+            lblDijkstraResult.Text = $"{results.dijkstraResult.elapsedMs} мс";
+            lblFloydWarshal.Text = $"{results.floydWarshalResult.elapsedMs} мс";
+
+            ReconstructRoute(results.dijkstraResult.result, indexToIdMapping, txtDijkstraShortestPath, lblDijkstraShortestDistance, shouldHighlightPath: true);
+            ReconstructRoute(results.floydWarshalResult.result, indexToIdMapping, txtFloydWarshalShortestPath, lblFloydWarshalShortestDistance, shouldHighlightPath: false);
+
+            btnCalculate.Enabled = true;
+            this.Cursor = Cursors.Hand;
         }
 
         private (Result result, long elapsedMs) RunAndMeasure(Func<Result> algorithm)
@@ -289,9 +307,9 @@ namespace DjikstaAndFloydWarshall
             return (result, stopWatch.ElapsedMilliseconds);
         }
 
-        private void ReconstructRoute(int[] route, Dictionary<int, int> indexToIdMapping, int shortestDistance)
+        private void ReconstructRoute(Result result, Dictionary<int, int> indexToIdMapping, TextBox txtShortestPath, System.Windows.Forms.Label lblResultTime, bool shouldHighlightPath)
         {
-            var routeCityIds = route.Select(r => indexToIdMapping[r]).ToArray();
+            var routeCityIds = result.Route.Select(r => indexToIdMapping[r]).ToArray();
             var cityNames = new string[routeCityIds.Length];
             for (int i = 0; i < routeCityIds.Length; i++)
             {
@@ -299,12 +317,12 @@ namespace DjikstaAndFloydWarshall
             }
 
             txtShortestPath.Text = string.Join("->", cityNames);
-            if (gViewer.Graph != null)
+            if (gViewer.Graph != null && shouldHighlightPath)
             {
                 HighlightShortestPath(cityNames);
             }
 
-            lblShortestDistance.Text = $"({shortestDistance} км)";
+            lblResultTime.Text = $"({result.Distance} км)";
         }
 
         private void HighlightShortestPath(string[] cityNames)
@@ -341,28 +359,33 @@ namespace DjikstaAndFloydWarshall
         private static Random _random = new Random();
         private void btnGenerateCitiesLoad_Click(object sender, EventArgs e)
         {
+            cmbCityFrom.Items.Clear();
+            cmbCityTo.Items.Clear();
             _cities.Clear();
 
-            var cityCount = 500;
-            var maxConnections = 100;
-            var maxDistance = 100;
-            
+            var cityCount = 800;
+            var maxConnections = 10;
+            var maxDistance = 300;
+
             for (int i = 0; i < cityCount; i++)
             {
                 _cities.Add(new City(i, $"City-{i}"));
             }
 
-            foreach (var city in _cities)
+            for (int i = 0; i < _cities.Count; i++)
             {
                 for (int j = 0; j < _random.Next(1, maxConnections); j++)
                 {
-                    if (city.Id == j)
+                    var cityIdToConnect = _random.Next(Math.Min(i + 1, cityCount - 1), Math.Min(cityCount, i + maxConnections));
+
+                    if (_cities[i].Id == cityIdToConnect ||
+                        _cities[i].Connections.Any(c => c.City.Id == cityIdToConnect))
                     {
                         continue;
                     }
 
-                    city.Connections.Add(
-                        new Connection(_cities.FirstOrDefault(c => c.Id == j), _random.Next(1, maxDistance)));
+                    _cities[i].Connections.Add(
+                        new Connection(_cities.FirstOrDefault(c => c.Id == cityIdToConnect), _random.Next(1, maxDistance)));
                 }
             }
 
