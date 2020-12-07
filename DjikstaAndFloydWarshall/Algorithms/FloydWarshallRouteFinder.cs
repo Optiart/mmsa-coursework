@@ -5,13 +5,15 @@ namespace DjikstaAndFloydWarshall
 {
     public class FloydWarshallRouteFinder : IFastestRouteFinder
     {
-        public Result Find(int[,] graph, int source, int target)
+        private const long inf = long.MaxValue;
+
+        public Result Find(int[,] graph, int s, int t)
         {
             var vertexCount = graph.GetLength(0);
-            var distances = new long[vertexCount, vertexCount];
+            var d = new long[vertexCount, vertexCount];
             var pathes = new int[vertexCount, vertexCount];
 
-            Initialize(graph, distances, pathes);
+            Initialize(graph, d, pathes);
 
             for (int k = 0; k < vertexCount; k++)
             {
@@ -20,29 +22,29 @@ namespace DjikstaAndFloydWarshall
                     for (int j = 0; j < vertexCount; j++)
                     {
                         long calculatedDistance;
-                        if (distances[i, k] == long.MaxValue || distances[k, j] == long.MaxValue)
+                        if (d[i, k] == inf || d[k, j] == inf)
                         {
-                            calculatedDistance = long.MaxValue;
+                            calculatedDistance = inf;
                         }
                         else
                         {
-                            calculatedDistance = distances[i, k] + distances[k, j];
+                            calculatedDistance = d[i, k] + d[k, j];
                         }
 
-                        if (distances[i, j] > calculatedDistance)
+                        if (d[i, j] > calculatedDistance)
                         {
-                            distances[i, j] = calculatedDistance;
+                            d[i, j] = calculatedDistance;
                             pathes[i, j] = pathes[i, k];
                         }
                     }
                 }
             }
 
-            var route = BuildRoute(pathes, source, target);
+            var route = BuildRoute(pathes, s, t);
 
             return new Result
             {
-                Distance = distances[source, target],
+                Distance = d[s, t],
                 Route = route
             };
         }
@@ -54,7 +56,7 @@ namespace DjikstaAndFloydWarshall
             {
                 for (int j = 0; j < vertexCount; j++)
                 {
-                    distances[i, j] = long.MaxValue;
+                    distances[i, j] = inf;
                     pathes[i, j] = i == j ? i : -1;
                 }
             }
@@ -73,23 +75,23 @@ namespace DjikstaAndFloydWarshall
             }
         }
 
-        private int[] BuildRoute(int[,] pathes, int source, int target)
+        private int[] BuildRoute(int[,] pathes, int s, int t)
         {
-            if (pathes[source, target] == -1)
+            if (pathes[s, t] == -1)
             {
                 return Array.Empty<int>();
             }
 
             var route = new List<int>
             {
-                source
+                s
             };
 
-            var currentNode = source;
-            while (currentNode != target)
+            var node = s;
+            while (node != t)
             {
-                currentNode = pathes[currentNode, target];
-                route.Add(currentNode);
+                node = pathes[node, t];
+                route.Add(node);
             }
 
             return route.ToArray();

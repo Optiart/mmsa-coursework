@@ -309,11 +309,29 @@ namespace DjikstaAndFloydWarshall
             cmbCityTo.Items.AddRange(_cities.ToArray());
         }
 
-        private void btnGenerateCities_Click(object sender, EventArgs e) =>
-            AutoGenerate(() => AutoGenerator.GenerateCitiesForDemo());
+        private void btnGenerateCities_Click(object sender, EventArgs e)
+        {
+            if (_cities.Any() &&
+                MessageBox.Show("Введені дані будуть перезаписані. Продовжити?", "Підтвердження", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                return;
+            }
 
-        private void btnGenerateCitiesLoad_Click(object sender, EventArgs e) =>
+            AutoGenerate(() => AutoGenerator.GenerateCitiesForDemo());
+        }
+
+
+        private void btnGenerateCitiesLoad_Click(object sender, EventArgs e)
+        {
+            if (_cities.Any() &&
+                MessageBox.Show("Введені дані будуть перезаписані. Продовжити?", "Підтвердження", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                return;
+            }
+
             AutoGenerate(() => AutoGenerator.GenerateCitiesAndConnectionsForLoad(cityCount: 800, maxConnections: 10, maxDistance: 300));
+        }
+
 
         private void AutoGenerate(Func<List<City>> generateCities)
         {
@@ -336,6 +354,31 @@ namespace DjikstaAndFloydWarshall
         {
             RefreshList(lstCityConnections, connections.ToArray());
             lblConnectionCount.Text = $"{lstCityConnections.Items.Count}";
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            if (!_cities.Any())
+            {
+                return;
+            }
+
+            if (MessageBox.Show("Стерти всі дані?", "Підтвердження", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                return;
+            }
+
+            _cities = new List<City>();
+            RefreshCities();
+            RefreshAllConnections();
+            RefreshGraphView();
+            cmbCityFrom.Items.Clear();
+            cmbCityTo.Items.Clear();
+
+            txtDijkstraShortestPath.Text = string.Empty;
+            txtFloydWarshalShortestPath.Text = string.Empty;
+            lblDijkstraResult.Text = string.Empty;
+            lblFloydWarshal.Text = string.Empty;
         }
     }
 }

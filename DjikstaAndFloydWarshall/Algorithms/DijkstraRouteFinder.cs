@@ -4,24 +4,25 @@ namespace DjikstaAndFloydWarshall
 {
     public class DijkstraRouteFinder : IFastestRouteFinder
     {
-        public Result Find(int[,] graph, int source, int target)
+        public Result Find(int[,] graph, int s, int t)
         {
+            const long inf = long.MaxValue;
             var vertexCount = graph.GetLength(0);
-            var distances = new long[vertexCount];
+            var d = new long[vertexCount];
             var visited = new bool[vertexCount];
 
             var minPQ = new SimpleMinimumPriorityQueue();
-            minPQ.UpdatePriority((source, 0));
-            var previousVertecies = new int[vertexCount];
+            minPQ.UpdatePriority((s, 0));
+            var prev = new int[vertexCount];
 
-            for (int i = 0; i < previousVertecies.Length; i++)
+            for (int i = 0; i < prev.Length; i++)
             {
-                previousVertecies[i] = -1;
+                prev[i] = -1;
             }
 
-            for (int i = 0; i < distances.Length; i++)
+            for (int i = 0; i < d.Length; i++)
             {
-                distances[i] = i == source ? 0 : long.MaxValue;
+                d[i] = i == s ? 0 : inf;
             }
 
             while (!minPQ.IsEmpty)
@@ -29,46 +30,46 @@ namespace DjikstaAndFloydWarshall
                 var (index, _) = minPQ.ExtractMin();
                 visited[index] = true;
 
-                if (index == target)
+                if (index == t)
                 {
                     break;
                 }
 
-                for (int vertex = 0; vertex < vertexCount; vertex++)
+                for (int v = 0; v < vertexCount; v++)
                 {
-                    if (graph[index, vertex] != -1 && !visited[vertex])
+                    if (graph[index, v] != -1 && !visited[v])
                     {
-                        var newDistance = distances[index] + graph[index, vertex];
-                        if (newDistance < distances[vertex])
+                        var newDistance = d[index] + graph[index, v];
+                        if (newDistance < d[v])
                         {
-                            distances[vertex] = newDistance;
-                            previousVertecies[vertex] = index;
+                            d[v] = newDistance;
+                            prev[v] = index;
                         }
 
-                        minPQ.UpdatePriority((vertex, distances[vertex]));
+                        minPQ.UpdatePriority((v, d[v]));
                     }
                 }
             }
 
-            var route = BuildRoute(previousVertecies, source, target);
+            var route = BuildRoute(prev, s, t);
 
             return new Result
             {
-                Distance = distances[target],
+                Distance = d[t],
                 Route = route
             };
         }
 
-        private int[] BuildRoute(int[] previousVertecies, int source, int target)
+        private int[] BuildRoute(int[] prev, int s, int t)
         {
-            var node = target;
+            var node = t;
             var route = new List<int>();
-            if (previousVertecies[target] != -1 || node == source)
+            if (prev[t] != -1 || node == s)
             {
                 while (node != -1)
                 {
                     route.Insert(0, node);
-                    node = previousVertecies[node];
+                    node = prev[node];
                 }
             }
 

@@ -32,6 +32,7 @@ namespace DjikstaAndFloydWarshall
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.gViewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             this.pnlConnections = new System.Windows.Forms.Panel();
+            this.lblConnectionCount = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.btnRemoveConnection = new System.Windows.Forms.Button();
             this.lstCityConnections = new System.Windows.Forms.ListBox();
@@ -49,24 +50,24 @@ namespace DjikstaAndFloydWarshall
             this.label14 = new System.Windows.Forms.Label();
             this.lstAllConnections = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblCityCount = new System.Windows.Forms.Label();
+            this.btnGenerateCitiesLoad = new System.Windows.Forms.Button();
             this.btnGenerateCitiesDemo = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.btnRemoveCity = new System.Windows.Forms.Button();
             this.lstCity = new System.Windows.Forms.ListBox();
             this.btnAddCity = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
-            this.btnGenerateCitiesLoad = new System.Windows.Forms.Button();
             this.txtDijkstraShortestPath = new System.Windows.Forms.TextBox();
             this.lblDijkstraShortestDistance = new System.Windows.Forms.Label();
             this.lblGraphError = new System.Windows.Forms.Label();
-            this.lblCityCount = new System.Windows.Forms.Label();
-            this.lblConnectionCount = new System.Windows.Forms.Label();
             this.lblAllConnectionsCount = new System.Windows.Forms.Label();
             this.lblDijkstraResult = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lblFloydWarshalShortestDistance = new System.Windows.Forms.Label();
             this.txtFloydWarshalShortestPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnReset = new System.Windows.Forms.Button();
             this.pnlConnections.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -127,6 +128,17 @@ namespace DjikstaAndFloydWarshall
             this.pnlConnections.Name = "pnlConnections";
             this.pnlConnections.Size = new System.Drawing.Size(441, 405);
             this.pnlConnections.TabIndex = 12;
+            // 
+            // lblConnectionCount
+            // 
+            this.lblConnectionCount.AutoSize = true;
+            this.lblConnectionCount.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblConnectionCount.Location = new System.Drawing.Point(240, 14);
+            this.lblConnectionCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblConnectionCount.Name = "lblConnectionCount";
+            this.lblConnectionCount.Size = new System.Drawing.Size(48, 21);
+            this.lblConnectionCount.TabIndex = 43;
+            this.lblConnectionCount.Text = "(100)";
             // 
             // label5
             // 
@@ -320,6 +332,7 @@ namespace DjikstaAndFloydWarshall
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnReset);
             this.panel1.Controls.Add(this.lblCityCount);
             this.panel1.Controls.Add(this.btnGenerateCitiesLoad);
             this.panel1.Controls.Add(this.btnGenerateCitiesDemo);
@@ -334,11 +347,35 @@ namespace DjikstaAndFloydWarshall
             this.panel1.Size = new System.Drawing.Size(437, 405);
             this.panel1.TabIndex = 38;
             // 
+            // lblCityCount
+            // 
+            this.lblCityCount.AutoSize = true;
+            this.lblCityCount.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCityCount.Location = new System.Drawing.Point(229, 14);
+            this.lblCityCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCityCount.Name = "lblCityCount";
+            this.lblCityCount.Size = new System.Drawing.Size(48, 21);
+            this.lblCityCount.TabIndex = 42;
+            this.lblCityCount.Text = "(100)";
+            // 
+            // btnGenerateCitiesLoad
+            // 
+            this.btnGenerateCitiesLoad.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGenerateCitiesLoad.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGenerateCitiesLoad.Location = new System.Drawing.Point(4, 267);
+            this.btnGenerateCitiesLoad.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnGenerateCitiesLoad.Name = "btnGenerateCitiesLoad";
+            this.btnGenerateCitiesLoad.Size = new System.Drawing.Size(168, 62);
+            this.btnGenerateCitiesLoad.TabIndex = 41;
+            this.btnGenerateCitiesLoad.Text = "Автозаповнення (Load)";
+            this.btnGenerateCitiesLoad.UseVisualStyleBackColor = true;
+            this.btnGenerateCitiesLoad.Click += new System.EventHandler(this.btnGenerateCitiesLoad_Click);
+            // 
             // btnGenerateCitiesDemo
             // 
             this.btnGenerateCitiesDemo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnGenerateCitiesDemo.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGenerateCitiesDemo.Location = new System.Drawing.Point(4, 235);
+            this.btnGenerateCitiesDemo.Location = new System.Drawing.Point(4, 180);
             this.btnGenerateCitiesDemo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnGenerateCitiesDemo.Name = "btnGenerateCitiesDemo";
             this.btnGenerateCitiesDemo.Size = new System.Drawing.Size(168, 62);
@@ -363,10 +400,10 @@ namespace DjikstaAndFloydWarshall
             this.btnRemoveCity.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRemoveCity.Enabled = false;
             this.btnRemoveCity.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRemoveCity.Location = new System.Drawing.Point(11, 106);
+            this.btnRemoveCity.Location = new System.Drawing.Point(4, 106);
             this.btnRemoveCity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnRemoveCity.Name = "btnRemoveCity";
-            this.btnRemoveCity.Size = new System.Drawing.Size(158, 44);
+            this.btnRemoveCity.Size = new System.Drawing.Size(168, 44);
             this.btnRemoveCity.TabIndex = 38;
             this.btnRemoveCity.Text = "Видалити";
             this.btnRemoveCity.UseVisualStyleBackColor = true;
@@ -392,10 +429,10 @@ namespace DjikstaAndFloydWarshall
             // 
             this.btnAddCity.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddCity.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddCity.Location = new System.Drawing.Point(10, 40);
+            this.btnAddCity.Location = new System.Drawing.Point(4, 40);
             this.btnAddCity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAddCity.Name = "btnAddCity";
-            this.btnAddCity.Size = new System.Drawing.Size(159, 44);
+            this.btnAddCity.Size = new System.Drawing.Size(168, 44);
             this.btnAddCity.TabIndex = 36;
             this.btnAddCity.Text = "Додати";
             this.btnAddCity.UseVisualStyleBackColor = true;
@@ -411,19 +448,6 @@ namespace DjikstaAndFloydWarshall
             this.label15.Size = new System.Drawing.Size(91, 21);
             this.label15.TabIndex = 48;
             this.label15.Text = "Всі зв\'язки";
-            // 
-            // btnGenerateCitiesLoad
-            // 
-            this.btnGenerateCitiesLoad.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnGenerateCitiesLoad.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGenerateCitiesLoad.Location = new System.Drawing.Point(4, 318);
-            this.btnGenerateCitiesLoad.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnGenerateCitiesLoad.Name = "btnGenerateCitiesLoad";
-            this.btnGenerateCitiesLoad.Size = new System.Drawing.Size(168, 62);
-            this.btnGenerateCitiesLoad.TabIndex = 41;
-            this.btnGenerateCitiesLoad.Text = "Автозаповнення (Load)";
-            this.btnGenerateCitiesLoad.UseVisualStyleBackColor = true;
-            this.btnGenerateCitiesLoad.Click += new System.EventHandler(this.btnGenerateCitiesLoad_Click);
             // 
             // txtDijkstraShortestPath
             // 
@@ -458,28 +482,6 @@ namespace DjikstaAndFloydWarshall
             this.lblGraphError.TabIndex = 51;
             this.lblGraphError.Text = "Граф не буде відображений - занадто багато зв\'язків";
             this.lblGraphError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCityCount
-            // 
-            this.lblCityCount.AutoSize = true;
-            this.lblCityCount.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCityCount.Location = new System.Drawing.Point(229, 14);
-            this.lblCityCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblCityCount.Name = "lblCityCount";
-            this.lblCityCount.Size = new System.Drawing.Size(48, 21);
-            this.lblCityCount.TabIndex = 42;
-            this.lblCityCount.Text = "(100)";
-            // 
-            // lblConnectionCount
-            // 
-            this.lblConnectionCount.AutoSize = true;
-            this.lblConnectionCount.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblConnectionCount.Location = new System.Drawing.Point(240, 14);
-            this.lblConnectionCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblConnectionCount.Name = "lblConnectionCount";
-            this.lblConnectionCount.Size = new System.Drawing.Size(48, 21);
-            this.lblConnectionCount.TabIndex = 43;
-            this.lblConnectionCount.Text = "(100)";
             // 
             // lblAllConnectionsCount
             // 
@@ -546,6 +548,19 @@ namespace DjikstaAndFloydWarshall
             this.label2.Size = new System.Drawing.Size(165, 21);
             this.label2.TabIndex = 54;
             this.label2.Text = "Найкоротший шлях: ";
+            // 
+            // btnReset
+            // 
+            this.btnReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnReset.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReset.Location = new System.Drawing.Point(4, 349);
+            this.btnReset.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(168, 32);
+            this.btnReset.TabIndex = 43;
+            this.btnReset.Text = "Стерти всі дані";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // frmMain
             // 
@@ -627,6 +642,7 @@ namespace DjikstaAndFloydWarshall
         private System.Windows.Forms.Label lblFloydWarshalShortestDistance;
         private System.Windows.Forms.TextBox txtFloydWarshalShortestPath;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnReset;
     }
 }
 
