@@ -375,10 +375,14 @@ namespace DjikstaAndFloydWarshall
             cmbCityFrom.Items.Clear();
             cmbCityTo.Items.Clear();
 
+            lstCityConnections.Items.Clear();
+
             txtDijkstraShortestPath.Text = string.Empty;
             txtFloydWarshalShortestPath.Text = string.Empty;
             lblDijkstraResult.Text = string.Empty;
             lblFloydWarshal.Text = string.Empty;
+            lblDijkstraShortestDistance.Text = string.Empty;
+            lblFloydWarshalShortestDistance.Text = string.Empty;
         }
     }
 }
