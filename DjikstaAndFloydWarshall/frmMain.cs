@@ -99,10 +99,16 @@ namespace DjikstaAndFloydWarshall
 
         private void btnRemoveCity_Click(object sender, EventArgs e)
         {
-            Action<string> action = selectedItem =>
+            Action<City> action = selectedItem =>
             {
-                _cities.RemoveAll(c => c.Name == selectedItem);
+                selectedItem.Connections.Clear();
+                _cities.RemoveAll(c => c.Name == selectedItem.Name);
+                foreach(var city in _cities)
+                {
+                    city.Connections.RemoveAll(c => c.City.Name == selectedItem.Name);
+                }
                 RefreshList(lstCity, _cities.ToArray());
+                lstCityConnections.Items.Clear();
             };
 
             RemoveFromList(lstCity, btnRemoveCity, action);
@@ -200,11 +206,13 @@ namespace DjikstaAndFloydWarshall
             }
 
             var graph = new int[_cities.Count, _cities.Count];
-            var indexToIdMapping = new Dictionary<int, int>();
+            var indexToCityIdMapping = new Dictionary<int, int>();
+            var cityIdtoIndexMapping = new Dictionary<int, int>();
 
             for (int i = 0; i < _cities.Count; i++)
             {
-                indexToIdMapping.Add(i, _cities[i].Id);
+                indexToCityIdMapping.Add(i, _cities[i].Id);
+                cityIdtoIndexMapping.Add(_cities[i].Id, i);
             }
 
             for (int i = 0; i < _cities.Count; i++)
@@ -219,7 +227,7 @@ namespace DjikstaAndFloydWarshall
 
                 for (int j = 0; j < _cities.Count; j++)
                 {
-                    var connectionCity = connections.SingleOrDefault(c => c.City.Id == indexToIdMapping[j]);
+                    var connectionCity = connections.SingleOrDefault(c => c.City.Id == indexToCityIdMapping[j]);
                     graph[i, j] = connectionCity == null ? -1 : connectionCity.DistanceKm;
                 }
             }
@@ -233,10 +241,10 @@ namespace DjikstaAndFloydWarshall
                 var floydWarshal = new FloydWarshallRouteFinder();
 
                 var dijkstraResult = RunAndMeasure(() =>
-                    dijkstra.Find(graph, indexToIdMapping[cityFrom.Id], indexToIdMapping[cityTo.Id]));
+                    dijkstra.Find(graph, cityIdtoIndexMapping[cityFrom.Id], cityIdtoIndexMapping[cityTo.Id]));
 
                 var floydWarshalResult = RunAndMeasure(() =>
-                    floydWarshal.Find(graph, indexToIdMapping[cityFrom.Id], indexToIdMapping[cityTo.Id]));
+                    floydWarshal.Find(graph, cityIdtoIndexMapping[cityFrom.Id], cityIdtoIndexMapping[cityTo.Id]));
 
                 return (dijkstraResult, floydWarshalResult);
             });
@@ -244,8 +252,16 @@ namespace DjikstaAndFloydWarshall
             lblDijkstraResult.Text = $"{results.dijkstraResult.elapsedMs} мс";
             lblFloydWarshal.Text = $"{results.floydWarshalResult.elapsedMs} мс";
 
-            ReconstructRoute(results.dijkstraResult.result, indexToIdMapping, txtDijkstraShortestPath, lblDijkstraShortestDistance, shouldHighlightPath: true);
-            ReconstructRoute(results.floydWarshalResult.result, indexToIdMapping, txtFloydWarshalShortestPath, lblFloydWarshalShortestDistance, shouldHighlightPath: false);
+            if (results.dijkstraResult.result.Distance == long.MaxValue && results.floydWarshalResult.result.Distance == long.MaxValue)
+            {
+                txtDijkstraShortestPath.Text = "Неможливо дістатися";
+                txtFloydWarshalShortestPath.Text = "Неможливо дістатися";
+            }
+            else
+            {
+                ReconstructRoute(results.dijkstraResult.result, indexToCityIdMapping, txtDijkstraShortestPath, lblDijkstraShortestDistance, shouldHighlightPath: true);
+                ReconstructRoute(results.floydWarshalResult.result, indexToCityIdMapping, txtFloydWarshalShortestPath, lblFloydWarshalShortestDistance, shouldHighlightPath: false);
+            }
 
             btnCalculate.Enabled = true;
             this.Cursor = Cursors.Hand;
